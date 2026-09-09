@@ -20,24 +20,8 @@ export default function Jogo() {
 
   // useEffect: sempre que a lista de concluidas muda, recalcula o saldo
   // de SoulCoins e salva o progresso.
-  useEffect(() => {
-    const soma = missoes
-      .filter((missao) => concluidas.includes(missao.id))
-      .reduce((total, missao) => total + missao.recompensa, 0);
 
-    setSaldo(soma);
-    localStorage.setItem('nuva:concluidas', JSON.stringify(concluidas));
-  }, [concluidas]);
 
-  function validarMissao(id: number) {
-    if (!concluidas.includes(id)) {
-      setConcluidas([...concluidas, id]);
-    }
-  }
-
-  function zerar() {
-    setConcluidas([]);
-  }
 
   // monta o ranking colocando o saldo atual do jogador na linha "Você"
   const ranking = ligaSemanal
@@ -62,6 +46,28 @@ export default function Jogo() {
     if (posicao === 2) return '🥉';
     return `${posicao + 1}º`;
   }
+
+
+
+    useEffect(() => {
+    const soma = missoes
+      .filter((missao) => concluidas.includes(missao.id))
+      .reduce((total, missao) => total + missao.recompensa, 0);
+
+    setSaldo(soma);
+    localStorage.setItem('nuva:concluidas', JSON.stringify(concluidas));
+  }, [concluidas]);
+
+  function validarMissao(id: number) {
+    if (!concluidas.includes(id)) {
+      setConcluidas([...concluidas, id]);
+    }
+  }
+
+  function zerar() {
+    setConcluidas([]);
+  }
+
 
   return (
     <>
