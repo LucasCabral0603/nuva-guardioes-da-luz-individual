@@ -1,80 +1,267 @@
-# SoulUp — Sistema de Gamificação Sustentável (versão Java)
+SoulUp — Sistema de Gamificação Sustentável
 
-Projeto Maven baseado no padrão apresentado pelo professor Thiago Yama na Apostila 13
-(disciplina Domain Driven Design using Java), usando JDBC puro com banco de dados
-Oracle (o mesmo Oracle do FIAP usado em aula).
+Projeto desenvolvido para a Sprint 3 da FIAP, utilizando Java, Maven, JDBC e Oracle Database.
 
-## Ferramentas utilizadas
+O SoulUp é um sistema voltado à sustentabilidade e à gamificação de ações sustentáveis. A aplicação permite o cadastro e gerenciamento de usuários, além do registro de ações sustentáveis realizadas pelos participantes.
 
-- IDE: IntelliJ IDEA, Eclipse ou NetBeans (qualquer uma com suporte a projetos Maven).
-- Java JDK: versão 25 (mesma configurada no pom.xml; se sua IDE não tiver essa versão,
-  pode ajustar `maven.compiler.source`/`target` para a versão do JDK instalada, ex: 17 ou 21).
-- Banco de dados: Oracle (oracle.fiap.com.br), o mesmo utilizado em aula.
-- Dependência JDBC: ojdbc8 (baixada automaticamente pelo Maven, já declarada no pom.xml).
+Objetivo do Projeto
 
-## Estrutura do projeto
+O objetivo do projeto é aplicar conceitos de desenvolvimento em Java, organização de código, acesso a banco de dados e implementação das principais operações de um sistema.
 
-```
-SoulUp-Java/
-├── pom.xml
-├── scripts.sql                      -> script de criação das tabelas no Oracle
-└── src/main/java/br/com/fiap/soulup/
-    ├── model/
-    │   ├── Usuario.java              -> entidade + regras de negócio (adicionarPontos, calcularNivel)
-    │   ├── AcaoSustentavel.java      -> entidade + regra de negócio (calcularPontuacao)
-    │   └── RegistroAcao.java
-    ├── factory/
-    │   └── ConnectionFactory.java    -> conexão com o Oracle
-    ├── exception/
-    │   └── EntidadeNaoEncontradaException.java
-    ├── dao/
-    │   ├── UsuarioDao.java           -> CRUD completo de usuários
-    │   └── RegistroAcaoDao.java      -> histórico de ações
-    └── view/
-        ├── ExemploConexao.java
-        ├── ExemploCadastro.java
-        ├── ExemploListagem.java
-        ├── ExemploPesquisaId.java
-        ├── ExemploAtualizacao.java
-        ├── ExemploRemocao.java
-        ├── ExemploRegistrarAcao.java
-        └── TesteGeral.java           -> classe de teste, exercita tudo em sequência
-```
+A aplicação utiliza uma estrutura organizada em camadas, separando as responsabilidades de conexão com o banco, acesso aos dados, modelos de domínio, exceções e classes utilizadas para execução e testes.
 
-## Por que a lógica de negócio está dentro das classes de domínio
+Tecnologias Utilizadas
 
-Seguindo o conceito de Domain-Driven Design visto na disciplina, os métodos de regra de
-negócio (`Usuario.adicionarPontos()`, `Usuario.calcularNivel()`,
-`AcaoSustentavel.calcularPontuacao()`) ficam dentro das próprias classes de modelo, em vez
-de uma camada de serviço separada. Isso evita um "modelo anêmico" (classes que só têm
-getters e setters) e deixa o comportamento junto com o dado que ele manipula.
+Java 17
 
-## Passo a passo para executar
+Maven
 
-1. **Criar as tabelas.** Rode o script `scripts.sql` no Oracle do FIAP (pelo SQL Developer
-   ou pela ferramenta que a disciplina usa). Ele cria `tb_usuario`, `tb_registro_acao` e as
-   sequences `sq_tb_usuario` e `sq_tb_registro_acao`.
+JDBC
 
-2. **Importar o projeto na IDE.**
-   - IntelliJ: `File > Open`, selecione a pasta `SoulUp-Java` (o `pom.xml` é detectado
-     automaticamente como projeto Maven).
-   - Eclipse/NetBeans: `File > Import > Existing Maven Project`, apontando para a pasta.
+Oracle Database
 
-3. **Ajustar as credenciais do banco.** Abra `factory/ConnectionFactory.java` e troque
-   `"SEU_RM_AQUI"` e `"SUA_SENHA_AQUI"` pelo usuário e senha do Oracle do FIAP de um dos
-   integrantes do grupo (o mesmo login usado em oracle.fiap.com.br). Faça o mesmo em
-   `view/ExemploConexao.java`.
+IntelliJ IDEA
 
-4. **Deixar o Maven baixar a dependência.** Ao abrir o projeto, a IDE deve baixar
-   automaticamente o `ojdbc8` declarado no `pom.xml`. Se não baixar sozinho, rode
-   `mvn install` ou clique em "Reload Maven Project".
+Git e GitHub
 
-5. **Executar as classes de exemplo.** Cada classe em `view/` roda uma operação isolada
-   (cadastrar, listar, buscar por id, atualizar, remover, registrar uma ação sustentável).
-   Para ver o sistema completo funcionando de uma vez, execute
-   `view/TesteGeral.java` (método `main`).
+Banco de Dados
 
-## Observação
+O projeto utiliza o Oracle Database, disponibilizado pela FIAP.
 
-Os dados de acesso ao banco (usuário e senha) ficam fixos no código de `ConnectionFactory`,
-conforme pedido no enunciado do trabalho.
+A conexão com o banco é realizada utilizando JDBC através da classe ConnectionFactory.
+
+As credenciais do banco não ficam diretamente armazenadas no código. Para executar o projeto, devem ser configuradas as seguintes variáveis de ambiente:
+
+ORACLE_USER
+ORACLE_PASSWORD
+
+Dessa forma, as informações de acesso ao banco não precisam ser publicadas no repositório.
+
+Estrutura do Projeto
+
+A estrutura principal do projeto está organizada da seguinte forma:
+
+src/
+└── main/
+    └── java/
+        └── br/
+            └── com/
+                └── fiap/
+                    └── soulup/
+                        ├── dao/
+                        │   ├── RegistroAcaoDao.java
+                        │   └── UsuarioDao.java
+                        ├── exception/
+                        │   └── EntidadeNaoEncontradaException.java
+                        ├── factory/
+                        │   └── ConnectionFactory.java
+                        ├── model/
+                        │   ├── AcaoSustentavel.java
+                        │   ├── RegistroAcao.java
+                        │   └── Usuario.java
+                        └── view/
+                            ├── ExemploAtualizacao.java
+                            ├── ExemploCadastro.java
+                            ├── ExemploConexao.java
+                            ├── ExemploListagem.java
+                            ├── ExemploPesquisaId.java
+                            ├── ExemploRegistrarAcao.java
+                            ├── ExemploRemocao.java
+                            └── TesteGeral.java
+
+Organização das Classes
+
+Model
+
+O pacote model contém as classes que representam as entidades utilizadas pelo sistema.
+
+Entre elas estão:
+
+Usuario
+
+AcaoSustentavel
+
+RegistroAcao
+
+Essas classes representam os dados utilizados pelas regras do sistema.
+
+DAO
+
+O pacote dao é responsável pelo acesso ao banco de dados.
+
+As principais classes são:
+
+UsuarioDao
+
+RegistroAcaoDao
+
+Essas classes realizam operações de cadastro, consulta, atualização e remoção de dados utilizando JDBC.
+
+Factory
+
+O pacote factory contém a classe responsável pela criação da conexão com o banco de dados.
+
+A classe ConnectionFactory centraliza a configuração e abertura da conexão JDBC com o Oracle Database.
+
+Exception
+
+O pacote exception possui exceções personalizadas utilizadas para tratar situações específicas da aplicação.
+
+A principal classe é:
+
+EntidadeNaoEncontradaException
+
+Ela é utilizada quando uma entidade solicitada não é encontrada no banco de dados.
+
+View
+
+O pacote view contém classes utilizadas para executar e demonstrar as funcionalidades desenvolvidas no projeto.
+
+Entre os exemplos estão:
+
+Conexão com o banco;
+
+Cadastro de usuários;
+
+Listagem de usuários;
+
+Pesquisa por ID;
+
+Atualização;
+
+Remoção;
+
+Registro de ações sustentáveis;
+
+Execução geral dos testes.
+
+Funcionalidades
+
+O projeto possui funcionalidades relacionadas ao gerenciamento dos usuários e das ações sustentáveis.
+
+Entre as principais operações estão:
+
+Cadastro de usuários;
+
+Listagem de usuários;
+
+Pesquisa de usuário por ID;
+
+Atualização de informações;
+
+Remoção de registros;
+
+Cadastro de ações sustentáveis;
+
+Registro de ações realizadas pelos usuários;
+
+Consulta de registros;
+
+Tratamento de entidades não encontradas;
+
+Conexão com banco de dados Oracle utilizando JDBC.
+
+Regras de Negócio
+
+O sistema possui entidades relacionadas à proposta de gamificação sustentável.
+
+Um usuário pode realizar ações sustentáveis e registrar essas ações no sistema.
+
+As ações sustentáveis possuem informações utilizadas para representar atividades relacionadas à sustentabilidade e à pontuação dos usuários.
+
+O registro de uma ação relaciona o usuário à ação sustentável realizada, permitindo manter o histórico das atividades.
+
+Acesso ao Banco de Dados
+
+A conexão é realizada pela classe ConnectionFactory.java.
+
+O projeto utiliza o driver JDBC da Oracle para realizar a comunicação com o banco.
+
+As credenciais devem ser configuradas no ambiente de execução através das variáveis:
+
+ORACLE_USER
+ORACLE_PASSWORD
+
+A URL utilizada para a conexão é:
+
+jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
+
+Execução do Projeto
+
+Para executar o projeto, é necessário possuir:
+
+Java 17 ou superior;
+
+Maven;
+
+IntelliJ IDEA ou outra IDE compatível;
+
+Acesso ao banco Oracle da FIAP;
+
+Credenciais válidas para conexão com o banco.
+
+1. Clonar o projeto
+
+Clone o repositório utilizando Git:
+
+git clone <URL_DO_REPOSITORIO>
+
+Depois, abra a pasta do projeto na IDE.
+
+2. Configurar as credenciais
+
+Configure as variáveis de ambiente:
+
+ORACLE_USER=seu_usuario
+ORACLE_PASSWORD=sua_senha
+
+Não publique essas informações no GitHub.
+
+3. Instalar as dependências
+
+No terminal, execute:
+
+mvn clean install
+
+4. Executar a aplicação
+
+O projeto pode ser executado através da IDE, utilizando as classes presentes no pacote:
+
+br.com.fiap.soulup.view
+
+A classe TesteGeral.java pode ser utilizada para executar e verificar diferentes funcionalidades do sistema.
+
+Maven
+
+As dependências do projeto são gerenciadas pelo arquivo pom.xml.
+
+O projeto utiliza Maven para gerenciamento das dependências e configuração da aplicação.
+
+Controle de Versão
+
+O projeto utiliza Git para controle de versão e GitHub para armazenamento do código-fonte.
+
+O histórico de commits permite acompanhar a evolução do desenvolvimento realizado durante o projeto.
+
+Segurança
+
+As credenciais do banco de dados não devem ser inseridas diretamente nos arquivos versionados.
+
+O projeto utiliza variáveis de ambiente para armazenar:
+
+ORACLE_USER
+ORACLE_PASSWORD
+
+Essa abordagem evita que informações sensíveis sejam expostas publicamente no repositório.
+
+Integrante
+
+Lucas Luque Cabral
+
+RM: 573347
+
+Turma: 1TDSPV
+
+Sprint
+
+Sprint 03 — FIAP
